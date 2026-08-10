@@ -1,109 +1,102 @@
-# Welcome to React Router + Cloudflare Workers!
+# react-router-starter-template
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cloudflare/templates/tree/main/react-router-starter-template)
-
-![React Router Starter Template Preview](https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/bfdc2f85-e5c9-4c92-128b-3a6711249800/public)
-
-<!-- dash-content-start -->
+![Node](https://img.shields.io/badge/node-20+-green)
 
 A modern, production-ready template for building full-stack React applications using [React Router](https://reactrouter.com/) and the [Cloudflare Vite plugin](https://developers.cloudflare.com/workers/vite-plugin/).
 
-## Features
+## Table of Contents
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
-- 🔎 Built-in Observability to monitor your Worker
-<!-- dash-content-end -->
+- [Overview](#overview)
+- [Quick Start](#quick-start)
+- [Model Routing](#model-routing)
+- [Project Layout](#project-layout)
+- [Development](#development)
+- [Related Repositories](#related-repositories)
 
-## Getting Started
+## Overview
 
-Outside of this repo, you can start a new project with this template using [C3](https://developers.cloudflare.com/pages/get-started/c3/) (the `create-cloudflare` CLI):
+A modern, production-ready template for building full-stack React applications using [React Router](https://reactrouter.com/) and the [Cloudflare Vite plugin](https://developers.cloudflare.com/workers/vite-plugin/).
 
-```bash
-npm create cloudflare@latest -- --template=cloudflare/templates/react-router-starter-template
-```
+| | |
+|---|---|
+| **Stack** | node |
+| **Frameworks** | react |
+| **Tests** | none detected |
+| **Commits** | 2 |
+| **Last activity** | 2026-08-10 |
+| **Visibility** | public |
 
-A live public deployment of this template is available at [https://react-router-starter-template.templates.workers.dev](https://react-router-starter-template.templates.workers.dev)
+## Quick Start
 
-### Installation
-
-Install the dependencies:
+### Install
 
 ```bash
 npm install
 ```
 
-### Development
-
-Start the development server with HMR:
+### Run
 
 ```bash
 npm run dev
 ```
 
-Your application will be available at `http://localhost:5173`.
+## Model Routing
 
-## Typegen
+Agent work in this repo routes through Azure AI Foundry. See [`AGENTS.md`](./AGENTS.md)
+for the full contract.
 
-Generate types for your Cloudflare bindings in `wrangler.json`:
-
-```sh
-npm run typegen
-```
-
-## Building for Production
-
-Create a production build:
+| Purpose | Deployment | Endpoint |
+|---|---|---|
+| Default / general | `gpt-5.6-sol` | `/openai/v1/chat/completions` |
+| Deep reasoning | `claude-opus-5` | `/openai/v1/responses` **only** |
+| Embeddings | `text-embedding-3-small` | `/openai/v1/embeddings` |
 
 ```bash
-npm run build
+export AZURE_FOUNDRY_API_KEY=...        # never commit this
+export AZURE_FOUNDRY_BASE_URL=https://<resource>.openai.azure.com/openai/v1
 ```
 
-## Previewing the Production Build
+> **Gotcha:** Claude deployments on Azure return `404 api_not_supported` on
+> `/chat/completions`. They answer **only** via the Responses API.
 
-Preview the production build locally:
+## Project Layout
+
+```
+AGENTS.md
+LICENSE
+README.md
+app/
+package-lock.json
+package.json
+public/
+react-router.config.ts
+tsconfig.cloudflare.json
+tsconfig.json
+tsconfig.node.json
+vite.config.ts
+worker-configuration.d.ts
+workers/
+```
+
+## Development
 
 ```bash
-npm run preview
+# lint / format before committing
+npm run lint
+
+# run the CI check locally
+gh workflow run hermes-azure-check.yml
 ```
 
-## Deployment
+Secrets live in environment variables and CI secrets — never in tracked files.
 
-If you don't have a Cloudflare account, [create one here](https://dash.cloudflare.com/sign-up)! Go to your [Workers dashboard](https://dash.cloudflare.com/?to=%2F%3Aaccount%2Fworkers-and-pages) to see your [free custom Cloudflare Workers subdomain](https://developers.cloudflare.com/workers/configuration/routing/workers-dev/) on `*.workers.dev`.
+## Related Repositories
 
-Once that's done, you can build your app:
+Part of a 84-repository workspace sharing one agentic contract:
 
-```sh
-npm run build
-```
-
-And deploy it:
-
-```sh
-npm run deploy
-```
-
-To deploy a preview URL:
-
-```sh
-npx wrangler versions upload
-```
-
-You can then promote a version to production after verification or roll it out progressively.
-
-```sh
-npx wrangler versions deploy
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+- **[agentic-harness](https://github.com/sahiixx/agentic-harness)** — patterns, contracts, and reference implementations
+- `AGENTS.md` in every repo pins identical model routing
 
 ---
 
-Built with ❤️ using React Router.
+<sub>README maintained by the agentic harness · last regenerated 2026-08-10</sub>
